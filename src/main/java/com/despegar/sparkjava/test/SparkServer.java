@@ -15,6 +15,7 @@ import com.despegar.http.client.OptionsMethod;
 import com.despegar.http.client.PatchMethod;
 import com.despegar.http.client.PostMethod;
 import com.despegar.http.client.PutMethod;
+import com.despegar.http.client.WithoutBodyMethod;
 
 import spark.Service;
 import spark.Spark;
@@ -98,6 +99,16 @@ public class SparkServer<T extends SparkApplication> extends ExternalResource {
 	
 	public OptionsMethod options(String path, boolean followRedirect) {
 		return new OptionsMethod(this.protocolHostPort + path, followRedirect);
+	}
+	
+	public HeadMethod head(String path, boolean followRedirect) {
+		return new HeadMethod(this.protocolHostPort + path, followRedirect);
+	}
+	
+	public static class HeadMethod extends WithoutBodyMethod {
+		public HeadMethod(String url, boolean followRedirects) {
+			super(url, "HEAD", followRedirects);
+		}
 	}
 	
 	public HttpResponse execute(HttpMethod httpMethod) throws HttpClientException {
